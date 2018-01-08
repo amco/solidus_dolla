@@ -1,0 +1,3 @@
+module SolidusAmcoDolla
+  VERSION = '0.0.1'
+end
