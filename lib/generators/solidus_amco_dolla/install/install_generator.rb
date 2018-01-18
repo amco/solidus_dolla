@@ -25,6 +25,10 @@ module SolidusAmcoDolla
           puts 'Skipping rake db:migrate, don\'t forget to run it!'
         end
       end
+
+      def install_dolla
+        run 'bundle exec rake dolla:install'
+      end
     end
   end
 end
