@@ -27,7 +27,7 @@ module SolidusAmcoDolla
       end
 
       def install_dolla
-        run 'bundle exec rake dolla:install'
+        run 'bundle exec rails g dolla:install'
       end
     end
   end
