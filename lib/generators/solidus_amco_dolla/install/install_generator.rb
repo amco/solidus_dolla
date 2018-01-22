@@ -1,3 +1,4 @@
+require 'dolla'
 module SolidusAmcoDolla
   module Generators
     class InstallGenerator < Rails::Generators::Base

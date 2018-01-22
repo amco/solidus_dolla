@@ -17,7 +17,6 @@ end
 gem 'pg', '~> 0.21'
 gem 'sqlite3'
 gem 'mysql2'
-gem 'dolla', path: '../dolla', require: true
 
 group :development, :test do
   gem 'i18n-tasks', '~> 0.9' if branch == 'master'
