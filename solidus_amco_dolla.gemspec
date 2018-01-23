@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'solidus_backend', solidus_version
   s.add_dependency 'solidus_api', solidus_version
   s.add_dependency 'solidus_support'
+  s.add_dependency 'dolla'
 
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'poltergeist'
@@ -30,5 +31,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'pry-rails'
+  s.add_development_dependency 'pry'
 end

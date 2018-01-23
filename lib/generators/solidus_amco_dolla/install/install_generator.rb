@@ -1,3 +1,4 @@
+require 'dolla'
 module SolidusAmcoDolla
   module Generators
     class InstallGenerator < Rails::Generators::Base
@@ -24,6 +25,10 @@ module SolidusAmcoDolla
         else
           puts 'Skipping rake db:migrate, don\'t forget to run it!'
         end
+      end
+
+      def install_dolla
+        run 'bundle exec rails g dolla:install'
       end
     end
   end
