@@ -1,13 +1,13 @@
 # encoding: UTF-8
 
 $:.push File.expand_path('../lib', __FILE__)
-require 'solidus_amco_dolla/version'
+require 'solidus_dolla/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'solidus_amco_dolla'
-  s.version     = SolidusAmcoDolla::VERSION
-  s.summary     = 'Amco Dolla Payment Gateway Solidus Integration'
-  s.description = 'Amco Dolla Payment Gateway Solidus Integration'
+  s.name        = 'solidus_dolla'
+  s.version     = SolidusDolla::VERSION
+  s.summary     = 'Dolla Payment Gateway Solidus Integration'
+  s.description = 'Dolla Payment Gateway Solidus Integration'
   s.license     = 'BSD-3-Clause'
   s.author    = 'Mumo Carlos'
   s.email     = 'mumo.crls@gmail.com'
