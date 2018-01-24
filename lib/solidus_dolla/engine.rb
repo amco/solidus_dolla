@@ -1,8 +1,8 @@
-module SolidusAmcoDolla
+module SolidusDolla
   class Engine < Rails::Engine
     require 'spree/core'
     isolate_namespace Spree
-    engine_name 'solidus_amco_dolla'
+    engine_name 'solidus_dolla'
     config.autoload_paths += %W(#{config.root}/lib)
 
     # use rspec for tests
