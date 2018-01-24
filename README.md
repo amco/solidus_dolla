@@ -1,4 +1,4 @@
-SolidusAmcoDolla
+SolidusDolla
 ================
 
 Introduction goes here.
@@ -6,17 +6,17 @@ Introduction goes here.
 Installation
 ------------
 
-Add solidus_amco_dolla to your Gemfile:
+Add solidus_dolla to your Gemfile:
 
 ```ruby
-gem 'solidus_amco_dolla'
+gem 'solidus_dolla'
 ```
 
 Bundle your dependencies and run the installation generator:
 
 ```shell
 bundle
-bundle exec rails g solidus_amco_dolla:install
+bundle exec rails g solidus_dolla:install
 ```
 
 Testing
@@ -33,7 +33,7 @@ When testing your applications integration with this extension you may use it's 
 Simply add this require statement to your spec_helper:
 
 ```ruby
-require 'solidus_amco_dolla/factories'
+require 'solidus_dolla/factories'
 ```
 
 Copyright (c) 2018 [name of extension creator], released under the New BSD License
