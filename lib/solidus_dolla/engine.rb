@@ -10,6 +10,10 @@ module SolidusDolla
       g.test_framework :rspec
     end
 
+    initializer :assets do |config|
+      Rails.application.config.assets.precompile += %w( credit_card.gif )
+    end
+
     def self.activate
       Dir.glob(File.join(File.dirname(__FILE__), '../../app/**/*_decorator*.rb')) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
@@ -17,5 +21,9 @@ module SolidusDolla
     end
 
     config.to_prepare(&method(:activate).to_proc)
+
+    initializer "spree.gateway.payment_methods", :after => "spree.register.payment_methods" do |app|
+      app.config.spree.payment_methods << Spree::Gateway::DollaCard
+    end
   end
 end
