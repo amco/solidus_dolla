@@ -80,8 +80,6 @@ module Spree
       %w(capture void credit)
     end
 
-
-
     def payment_source_class
       CreditCard
     end
@@ -92,10 +90,6 @@ module Spree
 
     def auto_capture?
       true
-    end
-
-    def with_installments?
-      false
     end
 
     def method_type
