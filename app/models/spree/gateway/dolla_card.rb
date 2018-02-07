@@ -25,6 +25,20 @@ module Spree
     end
 
     def create_profile(payment)
+      dolla_payment = Dolla::PaymentStub.new(
+        payment_id: payment.id,
+        code: payment.number,
+        amount: payment.amount.to_f,
+        cvv: payment.source.verification_value,
+        card_number: payment.source.number,
+        card_expiration: Date.parse("#{payment.source.year}/#{payment.source.month}"),
+        name: payment.order.bill_address.firstname,
+        last_name: payment.order.bill_address.lastname,
+        address: payment.order.bill_address.address1,
+        email: payment.order.email,
+        phone_number: payment.order.bill_address.phone,
+        zip_code: payment.order.bill_address.zipcode
+      )
       return if payment.source.has_payment_profile?
       # simulate the storage of credit card profile using remote service
       if success = VALID_CCS.include?(payment.source.number)
