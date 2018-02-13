@@ -1,17 +1,23 @@
 require "dolla"
 module Spree
   class Gateway::DollaCard < Spree::PaymentMethod::CreditCard
-    TEST_VISA = ['4111111111111111', '4012888888881881', '4222222222222']
-    TEST_MC   = ['5500000000000004', '5555555555554444', '5105105105105100']
-    TEST_AMEX = ['378282246310005', '371449635398431', '378734493671000', '340000000000009']
-    TEST_DISC = ['6011000000000004', '6011111111111117', '6011000990139424']
-
-    VALID_CCS = ['1', TEST_VISA, TEST_MC, TEST_AMEX, TEST_DISC].flatten
-
     attr_accessor :test
 
     def gateway_class
       self.class
+    end
+
+    def luhn_checksum(card_number)
+      return true if Rails.env.staging? || Rails.env.development?
+      return false unless card_number.present?
+      odd = true
+
+      checksum = card_number.reverse.split(//).map(&:to_i).map do |digit|
+        digit *= 2 if odd = !odd
+        digit > 9 ? digit - 9 : digit
+      end.sum
+
+      checksum % 10 == 0
     end
 
     def generate_profile_id(success)
@@ -40,8 +46,8 @@ module Spree
         zip_code: payment.order.bill_address.zipcode
       )
       return if payment.source.has_payment_profile?
-      # simulate the storage of credit card profile using remote service
-      if success = VALID_CCS.include?(payment.source.number)
+
+      if success = luhn_checksum(payment.source.number)
         payment.source.update_attributes(gateway_customer_profile_id: generate_profile_id(success))
       end
     end
@@ -55,20 +61,7 @@ module Spree
       end
     end
 
-    def credit(_money, _credit_card, _response_code, _options = {})
-      ActiveMerchant::Billing::Response.new(true, 'Dolla Gateway: Forced success', {}, test: true, authorization: '12345')
-    end
-
-    def void(_response_code, _credit_card, _options = {})
-      ActiveMerchant::Billing::Response.new(true, 'Dolla Gateway: Forced success', {}, test: true, authorization: '12345')
-    end
-
-    def try_void(_payment)
-      ActiveMerchant::Billing::Response.new(true, 'Dolla Gateway: Forced success', {}, test: true, authorization: '12345')
-    end
-
     def test?
-      # Test mode is not really relevant with dolla gateway (no such thing as live server)
       true
     end
 
