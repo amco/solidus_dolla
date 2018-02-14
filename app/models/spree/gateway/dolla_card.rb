@@ -20,41 +20,24 @@ module Spree
       checksum % 10 == 0
     end
 
-    def generate_profile_id(success)
-      record = true
-      prefix = success ? 'Dolla' : 'FAIL'
-      while record
-        random = "#{prefix}-#{Array.new(6){ rand(6) }.join}"
-        record = Spree::CreditCard.where(gateway_customer_profile_id: random).first
-      end
-      random
-    end
-
-    def create_profile(payment)
-      dolla_payment = Dolla::PaymentStub.new(
+    def purchase(_money, credit_card, _options = {})
+      payment = _options[:originator]
+      response = Dolla::PaymentStub.new(
         payment_id: payment.id,
         code: payment.number,
         amount: payment.amount.to_f,
         cvv: payment.source.verification_value,
-        card_number: payment.source.number,
-        card_expiration: Date.parse("#{payment.source.year}/#{payment.source.month}"),
+        card_number: credit_card.number,
+        card_expiration: Date.parse("#{credit_card.year}/#{credit_card.month}"),
         name: payment.order.bill_address.firstname,
         last_name: payment.order.bill_address.lastname,
         address: payment.order.bill_address.address1,
         email: payment.order.email,
         phone_number: payment.order.bill_address.phone,
         zip_code: payment.order.bill_address.zipcode
-      )
-      return if payment.source.has_payment_profile?
+      ).pay!
 
-      if success = luhn_checksum(payment.source.number)
-        payment.source.update_attributes(gateway_customer_profile_id: generate_profile_id(success))
-      end
-    end
-
-    def purchase(_money, credit_card, _options = {})
-      profile_id = credit_card.gateway_customer_profile_id
-      if VALID_CCS.include?(credit_card.number) || (profile_id && profile_id.starts_with?('Dolla-'))
+      if !response.hash[:envelope][:body][:procesa_compra_ol_response][:procesa_compra_ol_return].nil?
         ActiveMerchant::Billing::Response.new(true, 'Dolla Gateway: Forced success', {}, test: true, authorization: '12345', avs_result: { code: 'M' })
       else
         ActiveMerchant::Billing::Response.new(false, 'Dolla Gateway: Forced failure', message: 'Dolla Gateway: Forced failure', test: true)
@@ -66,7 +49,7 @@ module Spree
     end
 
     def payment_profiles_supported?
-      true
+      false
     end
 
     def actions
