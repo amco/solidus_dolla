@@ -44,7 +44,7 @@ module Spree
         if response_body[:ins_pago_amex_response][:authorization_code] && response_body[:ins_pago_amex_response][:codigo_respuesta] == "0"
           ActiveMerchant::Billing::Response.new(true, 'Payment was successful', {}, test: true)
         else
-          ActiveMerchant::Billing::Response.new(false, 'Dolla Gateway: Forced failure', message: 'Dolla Gateway: Forced failure', test: true)
+          ActiveMerchant::Billing::Response.new(false, 'Dolla Gateway: Forced failure', message: response_body[:ins_pago_amex_response][:mensaje], test: true)
         end
       else
         if !response_body[:procesa_compra_ol_response][:procesa_compra_ol_return].nil?
