@@ -26,7 +26,7 @@
 <p class="field" data-hook="card_code">
   <%= label_tag "card_code", t('spree.card_code') %><span class="required">*</span><br />
   <%= text_field_tag "#{param_prefix}[verification_value]", '', {id: 'card_code', class: 'required cardCode', size: 5, type: "tel", autocomplete: "off" } %>
-  <%= link_to "(#{t('spree.what_is_this')})", '#', id: "dolla_cvv_link" %>
+  <%= link_to "(#{t('spree.what_is_this')})", 'javascript:void(0);', id: "dolla_cvv_link" %>
 </p>
 
 <% if @order.bill_address %>
